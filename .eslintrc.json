@@ -1,0 +1,60 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "import/no-unresolved": 0,
+    "import/no-mutable-exports": "off",
+    "import/no-extraneous-dependencies": "error",
+    "import/first": "error",
+    "import/extensions": 0,
+    "import/prefer-default-export": "off",
+
+    // enable additional rules
+    "indent": ["error", 2],
+    "linebreak-style": ["error", "unix"],
+    "quotes": ["error", "single"],
+
+    // override default options for rules from base configurations
+    "no-cond-assign": ["error", "always"],
+
+    "max-len": ["warn", {
+      "code": 256,
+      "tabWidth": 2,
+      "ignoreComments": true,
+      "ignoreTrailingComments": true,
+      "ignoreUrls": true,
+      "ignoreStrings": true,
+      "ignoreTemplateLiterals": true,
+      "ignoreRegExpLiterals": true
+    }],
+
+    "no-async-promise-executor": "error",
+    "no-bitwise": "error",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "no-continue": "warn",
+    "no-empty": "warn",
+    "no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
+    "no-multi-assign": "warn",
+    "no-nested-ternary": "off",
+    "no-return-await": "warn",
+    "no-unused-expressions": 0,
+    "no-unused-vars": ["warn", { "args": "none" }],
+    "no-underscore-dangle": "off",
+    "no-useless-concat": "error",
+    "no-throw-literal": "error",
+    "no-param-reassign": ["error", { "props": false }],
+    "no-use-before-define": ["error", { "variables": false }],
+    "arrow-spacing": "error",
+    "keyword-spacing": "error",
+    "semi": "error",
+    "space-before-blocks": "error",
+    "space-before-function-paren": ["error", {"anonymous": "always", "named": "never"}],
+    "object-curly-spacing": ["error", "always"],
+    "comma-spacing": "error",
+    "key-spacing": ["error", { "mode": "strict" }],
+
+    "@next/next/no-img-element": "off",
+    "@next/next/no-html-link-for-pages": "off",
+
+    "react/no-unescaped-entities": "off"
+  }
+}
