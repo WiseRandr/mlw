@@ -4,6 +4,7 @@ import ChecklistPage from "./checklist.page";
 import { useAuth } from '../context/auth.context';
 import { Else, If, Then } from 'react-if';
 import LoginPage from './auth/login.page';
+import COLORS from '../ui/colors';
 
 const Stack = createNativeStackNavigator();
 
@@ -13,8 +14,8 @@ export default function Routes() {
   return <NavigationContainer>
     <If condition={isConnected}>
       <Then>
-        <Stack.Navigator>
-          <Stack.Screen name="checklists" component={ChecklistPage} options={{ headerTitle: 'Checklists' }} />
+        <Stack.Navigator screenOptions={{ contentStyle: { backgroundColor: COLORS.navy300 } }}>
+          <Stack.Screen name="checklists" component={ChecklistPage} options={{ headerTitle: 'Checklists', headerShadowVisible: false, headerStyle: { backgroundColor: COLORS.navy300 } }} />
         </Stack.Navigator>
       </Then>
 
