@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   description: {
-    fontSize: FONTS.size.medium,
+    fontSize: FONTS.size.small,
     fontStyle: 'italic'
   }
 });
