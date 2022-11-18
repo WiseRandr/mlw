@@ -5,6 +5,7 @@ import { useAuth } from '../context/auth.context';
 import { Else, If, Then } from 'react-if';
 import LoginPage from './auth/login.page';
 import COLORS from '../ui/colors';
+import PreDeparturePage from './pre-departure.page';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,6 +17,7 @@ export default function Routes() {
       <Then>
         <Stack.Navigator screenOptions={{ contentStyle: { backgroundColor: COLORS.navy300 } }}>
           <Stack.Screen name="checklists" component={ChecklistPage} options={{ headerTitle: 'Checklists', headerShadowVisible: false, headerStyle: { backgroundColor: COLORS.navy300 } }} />
+          <Stack.Screen name="pre-departure" component={PreDeparturePage} options={{ headerTitle: 'Pre-Departure Documents List', headerShadowVisible: false }} />
         </Stack.Navigator>
       </Then>
 

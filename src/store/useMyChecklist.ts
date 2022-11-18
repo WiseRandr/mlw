@@ -14,5 +14,7 @@ export const useMyChecklist = create<{
     if (state.myChecklist.find((c) => c.id === input.id)) return state;
     return { ...state, myChecklist: [...state.myChecklist, input] }
   }),
-  removeFromChecklist: (input: MyCheckListType) => set((state) => ({ ...state, myChecklist: state.myChecklist.filter(c => c .id !== input.id) }))
+  removeFromChecklist: (input: MyCheckListType) => set((state) => {
+    return ({ ...state, myChecklist: state.myChecklist.filter((c) => c.id !== input.id) })
+  })
 }));
