@@ -20,6 +20,8 @@ export default function CreateChecklistPage() {
     pushToChecklist({ id: uuid.v4() as string, name: title, createdAt: new Date(), items: [] });
     navigation.goBack();
   }, [title, navigation]);
+
+  const handleClear = useCallback(() => { setTitle('') }, []);
   
   return <View style={styles.container}>
     <View style={styles.header}>
@@ -33,7 +35,7 @@ export default function CreateChecklistPage() {
       </When>
     </View>
     <View>
-      <UITextInput value={title} onChangeText={handleChange} placeholder="Enter list's title" />
+      <UITextInput value={title} onChangeText={handleChange} placeholder="Enter list's title" onClear={handleClear} />
     </View>
   </View>
 }
