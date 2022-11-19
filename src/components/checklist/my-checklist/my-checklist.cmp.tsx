@@ -1,5 +1,5 @@
 import moment from "moment";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useMyChecklist } from "../../../store";
 import COLORS from "../../../ui/colors";
 import FONTS from "../../../ui/fonts";
@@ -22,11 +22,13 @@ export default function MyChecklistCMP() {
   return <View>
     <ChecklistTitleCMP title="My Checklists" description="Create your own personal checklist" />
 
-    <View>
-      {myChecklist.map((checklist) => (
-        <ChecklistCardCMP key={checklist.id}>
+    <FlatList
+      style={styles.list}
+      data={myChecklist}
+      renderItem={({ item }) => (
+        <ChecklistCardCMP key={item.id}>
           <SwipeModule
-            onPress={handleDelete(checklist)}
+            onPress={handleDelete(item)}
             rightContent={(
               <View style={styles.deleteSwipe}>
                 <TrashSvg />
@@ -35,14 +37,15 @@ export default function MyChecklistCMP() {
             }
           >
             <TouchableOpacity style={styles.item}>
-              <UIText style={styles.name}>{checklist.name}</UIText>
-              <UIText style={styles.text}>Date created: {moment(checklist.createdAt).format('DD.MM.YY')}</UIText>
-              <UIText style={styles.text}>Last item added: {checklist.items[checklist.items.length - 1]}</UIText>
+              <UIText style={styles.name}>{item.name}</UIText>
+              <UIText style={styles.text}>Date created: {moment(item.createdAt).format('DD.MM.YY')}</UIText>
+              <UIText style={styles.text}>Last item added: {item.items[item.items.length - 1]}</UIText>
             </TouchableOpacity>
           </SwipeModule>
         </ChecklistCardCMP>
-      ))}
-    </View>
+      )}
+      keyExtractor={(item) => item.id}
+    />
   </View>
 }
 
@@ -71,5 +74,8 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     justifyContent: 'center',
     height: '100%',
+  },
+  list: {
+    height: 450
   }
 });
