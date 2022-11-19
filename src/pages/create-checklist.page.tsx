@@ -8,6 +8,7 @@ import COLORS from "../ui/colors";
 import UITextInput from "../ui/inputs/text-input";
 import UIText from "../ui/text/text";
 import uuid from 'react-native-uuid';
+import ChevronLeftSvg from "../icon/chevron-left-svg";
 
 export default function CreateChecklistPage() {
   const navigation = useNavigation();
@@ -22,12 +23,14 @@ export default function CreateChecklistPage() {
   }, [title, navigation]);
 
   const handleClear = useCallback(() => { setTitle('') }, []);
+
+  const goBack = useCallback(() => { navigation.goBack() }, [navigation]);
   
   return <View style={styles.container}>
     <View style={styles.header}>
-      <View>
-        <UIText>back</UIText>
-      </View>
+      <TouchableOpacity style={styles.chevronContainer} onPress={goBack}>
+        <ChevronLeftSvg />
+      </TouchableOpacity>
       <When condition={title}>
         <TouchableOpacity style={styles.done} onPress={handleSubmit}>
           <UIText style={styles.doneText}>Done</UIText>
@@ -61,5 +64,10 @@ const styles = StyleSheet.create({
   doneText: {
     fontWeight: '700',
     color: COLORS.white,
+  },
+  chevronContainer: {
+    padding: 10,
+    borderRadius: 100,
+    backgroundColor: COLORS.white,
   }
 });
