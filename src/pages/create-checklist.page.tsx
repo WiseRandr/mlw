@@ -38,7 +38,7 @@ export default function CreateChecklistPage() {
       </When>
     </View>
     <View>
-      <UITextInput value={title} onChangeText={handleChange} placeholder="Enter list's title" onClear={handleClear} />
+      <UITextInput value={title} onChangeText={handleChange} placeholder="Insert list's title" onClear={handleClear} />
     </View>
   </View>
 }
