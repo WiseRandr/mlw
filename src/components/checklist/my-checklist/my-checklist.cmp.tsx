@@ -6,23 +6,17 @@ import FONTS from "../../../ui/fonts";
 import UIText from "../../../ui/text/text";
 import ChecklistCardCMP from "../card.cmp";
 import ChecklistTitleCMP from "../title.cmp";
-import { Swipeable } from "react-native-gesture-handler";
 import { MyCheckListType } from "../../../types";
-import { useCallback, useRef } from "react";
+import { useCallback } from "react";
 import SwipeModule from "../../../module/swipe/swipe.module";
 import TrashSvg from "../../../icon/trash-svg";
 
 export default function MyChecklistCMP() {
-  const swipeRef = useRef<Swipeable>(undefined as any);
   const myChecklist = useMyChecklist(state => state.myChecklist);
   const removeFromChecklist = useMyChecklist(state => state.removeFromChecklist);
 
   const handleDelete = useCallback((input: MyCheckListType) => () => {
     removeFromChecklist(input);
-  }, []);
-
-  const handlePress = useCallback(() => {
-    if (swipeRef.current) swipeRef.current.openRight();
   }, []);
 
   return <View>
@@ -40,7 +34,7 @@ export default function MyChecklistCMP() {
               </View>)
             }
           >
-            <TouchableOpacity style={styles.item} onPress={handlePress}>
+            <TouchableOpacity style={styles.item}>
               <UIText style={styles.name}>{checklist.name}</UIText>
               <UIText style={styles.text}>Date created: {moment(checklist.createdAt).format('DD.MM.YY')}</UIText>
               <UIText style={styles.text}>Last item added: {checklist.items[checklist.items.length - 1]}</UIText>

@@ -1,5 +1,5 @@
 export interface MyCheckListType {
-  id: number;
+  id: string;
   name: string;
   createdAt: Date;
   items: string[]; 
