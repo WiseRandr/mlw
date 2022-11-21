@@ -9,8 +9,9 @@ import UITextInput from "../ui/inputs/text-input";
 import UIText from "../ui/text/text";
 import uuid from 'react-native-uuid';
 import ChevronLeftSvg from "../icon/chevron-left-svg";
+import UIButton from "../ui/button/button";
 
-export default function CreateChecklistPage() {
+export default function CreateChecklistModalPage() {
   const navigation = useNavigation();
   const [title, setTitle] = useState<string>('');
   const pushToChecklist = useMyChecklist(state => state.pushToChecklist);
@@ -19,7 +20,7 @@ export default function CreateChecklistPage() {
 
   const handleSubmit = useCallback(() => {
     pushToChecklist({ id: uuid.v4() as string, name: title, createdAt: new Date(), items: [] });
-    navigation.goBack();
+    navigation.navigate('pre-create-checklist' as never);
   }, [title, navigation]);
 
   const handleClear = useCallback(() => { setTitle('') }, []);
@@ -32,9 +33,7 @@ export default function CreateChecklistPage() {
         <ChevronLeftSvg />
       </TouchableOpacity>
       <When condition={title}>
-        <TouchableOpacity style={styles.done} onPress={handleSubmit}>
-          <UIText style={styles.doneText}>Done</UIText>
-        </TouchableOpacity>
+        <UIButton full title="Done" onPress={handleSubmit} />
       </When>
     </View>
     <View>
@@ -54,16 +53,6 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     flexDirection: 'row',
     justifyContent: 'space-between'
-  },
-  done: {
-    borderRadius: 25,
-    paddingVertical: 10,
-    paddingHorizontal: 28,
-    backgroundColor: COLORS.blue
-  },
-  doneText: {
-    fontWeight: '700',
-    color: COLORS.white,
   },
   chevronContainer: {
     padding: 10,

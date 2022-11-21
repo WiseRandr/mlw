@@ -6,7 +6,9 @@ import { Else, If, Then } from 'react-if';
 import LoginPage from './auth/login.page';
 import COLORS from '../ui/colors';
 import PreDeparturePage from './pre-departure.page';
-import CreateChecklistPage from './create-checklist.page';
+import CreateChecklistModalPage from './create-checklist.modal.page';
+import PreCreateChecklistPage from './pre-create-checklist.page';
+import MyChecklistDetailPage from './my-checklist-detail.page';
 
 const Stack = createNativeStackNavigator();
 
@@ -19,9 +21,11 @@ export default function Routes() {
         <Stack.Navigator screenOptions={{ contentStyle: { backgroundColor: COLORS.navy300 } }}>
           <Stack.Screen name="checklists" component={ChecklistPage} options={{ headerTitle: 'Checklists', headerShadowVisible: false, headerStyle: { backgroundColor: COLORS.navy300 } }} />
           <Stack.Screen name="pre-departure" component={PreDeparturePage} options={{ headerTitle: 'Pre-Departure Documents List', headerShadowVisible: false }} />
+          <Stack.Screen name="pre-create-checklist" component={PreCreateChecklistPage} options={{ headerTitle: '', headerShadowVisible: false }} />
+          <Stack.Screen name="my-checklist-detail" component={MyChecklistDetailPage} options={{ headerTitle: '', headerShadowVisible: false }} />
 
           <Stack.Group screenOptions={{ presentation: 'modal', header: () => <></> }}>
-            <Stack.Screen name="create-my-checklist-modal" component={CreateChecklistPage} />
+            <Stack.Screen name="create-my-checklist-modal" component={CreateChecklistModalPage} />
           </Stack.Group>
         </Stack.Navigator>
       </Then>

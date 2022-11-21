@@ -1,5 +1,5 @@
 import moment from "moment";
-import { FlatList, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useMyChecklist } from "../../../store";
 import COLORS from "../../../ui/colors";
 import FONTS from "../../../ui/fonts";
@@ -10,14 +10,19 @@ import { MyCheckListType } from "../../../types";
 import { useCallback } from "react";
 import SwipeModule from "../../../module/swipe/swipe.module";
 import TrashSvg from "../../../icon/trash-svg";
+import ChevronRightSvg from "../../../icon/chevron-right-svg";
+import { useNavigation } from "@react-navigation/core";
 
 export default function MyChecklistCMP() {
+  const navigation = useNavigation();
   const myChecklist = useMyChecklist(state => state.myChecklist);
   const removeFromChecklist = useMyChecklist(state => state.removeFromChecklist);
 
   const handleDelete = useCallback((input: MyCheckListType) => () => {
     removeFromChecklist(input);
   }, []);
+
+  const goToPreCreate = useCallback((id: string) => () => { navigation.navigate('my-checklist-detail' as never, { id } as never); }, [navigation]);
 
   return <View>
     <ChecklistTitleCMP title="My Checklists" description="Create your own personal checklist" />
@@ -36,11 +41,16 @@ export default function MyChecklistCMP() {
               </View>)
             }
           >
-            <TouchableOpacity style={styles.item}>
-              <UIText style={styles.name}>{item.name}</UIText>
-              <UIText style={styles.text}>Date created: {moment(item.createdAt).format('DD.MM.YY')}</UIText>
-              <UIText style={styles.text}>Last item added: {item.items[item.items.length - 1]}</UIText>
-            </TouchableOpacity>
+            <View style={styles.content}>
+              <TouchableOpacity style={styles.item}>
+                <UIText style={styles.name}>{item.name}</UIText>
+                <UIText style={styles.text}>Date created: {moment(item.createdAt).format('DD.MM.YY')}</UIText>
+                <UIText style={styles.text}>Last item added: {item.items[item.items.length - 1]}</UIText>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={goToPreCreate(item.id)}>
+                <ChevronRightSvg />
+              </TouchableOpacity>
+            </View>
           </SwipeModule>
         </ChecklistCardCMP>
       )}
@@ -70,12 +80,17 @@ const styles = StyleSheet.create({
     color: COLORS.white
   },
   item: {
-    paddingHorizontal: 20,
-    paddingVertical: 12,
     justifyContent: 'center',
     height: '100%',
   },
   list: {
     height: 450
-  }
+  },
+  content: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
 });
