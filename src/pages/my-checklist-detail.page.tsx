@@ -1,8 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/core";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { When } from "react-if";
-import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { FlatList, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import uuid from 'react-native-uuid';
+import TaskItemCMP from "../components/task/task-item.cmp";
 import ChevronLeftSvg from "../icon/chevron-left-svg";
 import SwipeModule from "../module/swipe/swipe.module";
 import { useMyChecklist } from "../store";
@@ -58,8 +59,6 @@ export default function MyChecklistDetailPage() {
   const handleChange = useCallback((text: string) => { setNewTaskInput(text); }, []);
 
   const handlePushTodo = useCallback((task: TaskType) => () => { if (current) updateTask(current.id, task.id, { status: 'to-do' }) }, [current, updateTask]);
-  const handlePushCompleted = useCallback((task: TaskType) => () => { if (current) updateTask(current.id, task.id, { status: 'completed' }) }, [current, updateTask]);
-  const handleDeleteTask = useCallback((task: TaskType) => {}, []);
 
   useEffect(() => {
     navigation.setOptions({
@@ -76,14 +75,8 @@ export default function MyChecklistDetailPage() {
         <When condition={todos.length > 0 && completed.length > 0 && !isEditing}>
           <UIText style={styles.menu}>To-dos</UIText>
         </When>
-        {todos.map((todo) => (
-          <View key={todo.id} style={styles.item}>
-            <SwipeModule rightContent={<View><UIText>Done</UIText></View>} onPress={handlePushCompleted(todo)}>
-              <UIText style={styles.itemText}>{todo.name}</UIText>
-            </SwipeModule>
-          </View>
-        ))}
-
+        <FlatList renderItem={({ item }) => <TaskItemCMP task={item} checklistId={current?.id} />} data={todos} keyExtractor={(item) => item.id} ItemSeparatorComponent={() => <View style={styles.seperator} />} />
+        
         <When condition={isEditing}>
           <TextInput style={styles.input} placeholder="Task" value={newTaskInput} onChangeText={handleChange} />
         </When>
@@ -138,5 +131,9 @@ const styles = StyleSheet.create({
   input: {
     paddingVertical: 20,
     paddingHorizontal: 25,
+  },
+  seperator: {
+    flex: 1,
+    height: 1,
   }
 });
