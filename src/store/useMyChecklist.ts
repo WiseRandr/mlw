@@ -8,6 +8,7 @@ export const useMyChecklist = create<{
   pushToChecklist: (input: MyCheckListType) => void,
   removeFromChecklist: (input: MyCheckListType) => void,
   pushTask: (checklistId: string, task: TaskType) => void,
+  updateTask: (checklistId: string, taskId: string, data: { status: 'to-do' | 'completed' }) => void,
 }>((set) => ({
   myChecklist: [
     { id: uuid.v4(), name: 'Restaurants to visit in France', createdAt: new Date('2022-11-17'), items: [{ id: uuid.v4(), name: 'La Parfait', status: 'to-do' }, { id: uuid.v4(), name: 'Completed task', status: 'completed' }] },
@@ -22,5 +23,8 @@ export const useMyChecklist = create<{
   }),
   pushTask: (checklistId: string, task: TaskType) => set((state) => {
     return { ...state, myChecklist: state.myChecklist.map((ch) => ({ ...ch, items: ch.id === checklistId ? [...ch.items, task] : ch.items })) }
+  }),
+  updateTask: (checklistId: string, taskId: string, data: { status: 'to-do' | 'completed' }) => set((state) => {
+    return { ...state, myChecklist: state.myChecklist.map((ch) => ({ ...ch, items: ch.id === checklistId ? ch.items.map((ci) => ({ ...ci, status: ci.id === taskId ? data.status : ci.status })) : ch.items })) }
   })
 }));

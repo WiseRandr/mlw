@@ -4,6 +4,7 @@ import { When } from "react-if";
 import { StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
 import uuid from 'react-native-uuid';
 import ChevronLeftSvg from "../icon/chevron-left-svg";
+import SwipeModule from "../module/swipe/swipe.module";
 import { useMyChecklist } from "../store";
 import { TaskType } from "../types/task.type";
 import UIButton from "../ui/button/button";
@@ -19,6 +20,7 @@ export default function MyChecklistDetailPage() {
   // Store
   const myChecklists = useMyChecklist(state => state.myChecklist);
   const pushTask = useMyChecklist(state => state.pushTask);
+  const updateTask = useMyChecklist(state => state.updateTask);
 
   // States
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -55,6 +57,10 @@ export default function MyChecklistDetailPage() {
 
   const handleChange = useCallback((text: string) => { setNewTaskInput(text); }, []);
 
+  const handlePushTodo = useCallback((task: TaskType) => () => { if (current) updateTask(current.id, task.id, { status: 'to-do' }) }, [current, updateTask]);
+  const handlePushCompleted = useCallback((task: TaskType) => () => { if (current) updateTask(current.id, task.id, { status: 'completed' }) }, [current, updateTask]);
+  const handleDeleteTask = useCallback((task: TaskType) => {}, []);
+
   useEffect(() => {
     navigation.setOptions({
       headerLeft: () => (<TouchableOpacity onPress={leftOnPress} style={styles.headerLeft}><ChevronLeftSvg /><UIText>{isEditing ? 'Cancel' : 'Lists'}</UIText></TouchableOpacity>),
@@ -72,7 +78,9 @@ export default function MyChecklistDetailPage() {
         </When>
         {todos.map((todo) => (
           <View key={todo.id} style={styles.item}>
-            <UIText style={styles.itemText}>{todo.name}</UIText>
+            <SwipeModule rightContent={<View><UIText>Done</UIText></View>} onPress={handlePushCompleted(todo)}>
+              <UIText style={styles.itemText}>{todo.name}</UIText>
+            </SwipeModule>
           </View>
         ))}
 
@@ -86,7 +94,9 @@ export default function MyChecklistDetailPage() {
         <When condition={!isEditing}>
           {completed.map((comp) => (
             <View key={comp.id} style={styles.item}>
-              <UIText style={[styles.itemText, styles.itemTextCompleted]}>{comp.name}</UIText>
+              <SwipeModule rightContent={<View><UIText>Uncheck</UIText></View>} onPress={handlePushTodo(comp)}>
+                <UIText style={[styles.itemText, styles.itemTextCompleted]}>{comp.name}</UIText>
+              </SwipeModule>
             </View>
           ))}
         </When>
@@ -117,6 +127,7 @@ const styles = StyleSheet.create({
     borderColor: COLORS.grey,
     paddingVertical: 20,
     paddingHorizontal: 25,
+    marginBottom: 1
   },
   itemText: {
     fontSize: FONTS.size.normal
