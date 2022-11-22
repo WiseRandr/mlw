@@ -22,7 +22,7 @@ export default function Routes() {
           <Stack.Screen name="checklists" component={ChecklistPage} options={{ headerTitle: 'Checklists', headerShadowVisible: false, headerStyle: { backgroundColor: COLORS.navy300 } }} />
           <Stack.Screen name="pre-departure" component={PreDeparturePage} options={{ headerTitle: 'Pre-Departure Documents List', headerShadowVisible: false }} />
           <Stack.Screen name="pre-create-checklist" component={PreCreateChecklistPage} options={{ headerTitle: '', headerShadowVisible: false }} />
-          <Stack.Screen name="my-checklist-detail" component={MyChecklistDetailPage} options={{ headerTitle: '', headerShadowVisible: false }} />
+          <Stack.Screen name="my-checklist-detail" component={MyChecklistDetailPage} options={{ headerTitle: '', headerShadowVisible: false, headerStyle: { backgroundColor: COLORS.navy300 } }} />
 
           <Stack.Group screenOptions={{ presentation: 'modal', header: () => <></> }}>
             <Stack.Screen name="create-my-checklist-modal" component={CreateChecklistModalPage} />

@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     paddingVertical: 10,
     paddingHorizontal: 25,
+    fontSize: FONTS.size.small,
   },
   item: {
     borderTopWidth: 1,
