@@ -4,7 +4,7 @@ import COLORS from "../../ui/colors";
 import UIText from "../../ui/text/text";
 
 export default function PreDepartureStatCMP() {
-  const percentage = useMemo(() => 35, []);
+  const percentage = useMemo(() => 76, []);
   
   return <View style={styles.container}>
     <View style={styles.statTextContainer}><UIText style={styles.statText}>{percentage} completed</UIText></View>

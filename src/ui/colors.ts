@@ -1,5 +1,6 @@
 const COLORS = {
   navy300: '#ECEEF0',
+  navy500: '#8FAABF',
   navy800: '#002646',
   white: '#FFFFFF',
   black: '#000000',
