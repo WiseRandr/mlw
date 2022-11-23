@@ -1,13 +1,15 @@
 import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
+import { usePreDeparture } from "../../store";
 import COLORS from "../../ui/colors";
 import UIText from "../../ui/text/text";
 
 export default function PreDepartureStatCMP() {
-  const percentage = useMemo(() => 76, []);
+  const data = usePreDeparture(state => state.data);
+  const percentage = useMemo(() => Math.round(data.filter((d) => d.status === 'completed').length * 100 / data.length), [data]);
   
   return <View style={styles.container}>
-    <View style={styles.statTextContainer}><UIText style={styles.statText}>{percentage} completed</UIText></View>
+    <View style={styles.statTextContainer}><UIText style={styles.statText}>{percentage}% completed</UIText></View>
     <View style={styles.statContainer}>
       <View style={[styles.stat, styles.statFull, { width: `${percentage}%` }]} />
       <View style={[styles.stat, styles.statEmpty, { width: `${100 - percentage}%` }]} />
