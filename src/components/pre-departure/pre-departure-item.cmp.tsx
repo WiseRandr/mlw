@@ -1,5 +1,9 @@
 import moment from "moment";
-import { StyleSheet, View } from "react-native";
+import { When } from "react-if";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
+import { Swipeable } from "react-native-gesture-handler";
+import CheckSvg from "../../icon/check-svg";
+import MinusSvg from "../../icon/minus-svg";
 import TaskSvg from "../../icon/task-svg";
 import { PreDepartureType } from "../../types";
 import COLORS from "../../ui/colors";
@@ -7,23 +11,35 @@ import FONTS from "../../ui/fonts";
 import UIText from "../../ui/text/text";
 
 export default function PreDepartureItemCMP({ data }: { data: PreDepartureType }) {
-  return <View style={styles.container}>
-    <View style={styles.icon}><TaskSvg /></View>
-    <View style={styles.content}>
-      <View style={styles.firstContent}>
-        <View>
-          <UIText>{data.name}</UIText>
-          <UIText>{data.nationality}</UIText>
+  return <Swipeable renderRightActions={() => <View style={styles.buttonContainer}>
+    <When condition={data.status === 'completed'}>
+      <TouchableOpacity style={styles.doneContainer}><CheckSvg /><UIText style={styles.buttonText}>Uncheck</UIText></TouchableOpacity>
+    </When>
+    <When condition={data.status !== 'completed'}>
+      <TouchableOpacity style={styles.doneContainer}><CheckSvg /><UIText style={styles.buttonText}>Done</UIText></TouchableOpacity>
+    </When>
+    <When condition={data.optional && data.status !== 'completed'}>
+      <TouchableOpacity style={styles.skipContainer}><MinusSvg /><UIText style={styles.buttonText}>Skip</UIText></TouchableOpacity>
+    </When>
+  </View>}>
+    <View style={styles.container}>
+      <View style={styles.icon}><TaskSvg /></View>
+      <View style={styles.content}>
+        <View style={styles.firstContent}>
+          <View>
+            <UIText>{data.name}</UIText>
+            <UIText>{data.nationality}</UIText>
+          </View>
+          <UIText style={styles.typeText}>{data.optional && '(Optional)'}</UIText>
         </View>
-        <UIText style={styles.typeText}>{data.optional && '(Optional)'}</UIText>
-      </View>
 
-      <View style={styles.secondContent}>
-        <UIText style={styles.issueDateText}>Issue date: {moment(data.issue_date).format('DD.MM.YYYY')}</UIText>
-        <UIText style={styles.expDateText}>Exp. date: {moment(data.exp_date).format('DD.MM.YYYY')}</UIText>
+        <View style={styles.secondContent}>
+          <UIText style={styles.issueDateText}>Issue date: {moment(data.issue_date).format('DD.MM.YYYY')}</UIText>
+          <UIText style={styles.expDateText}>Exp. date: {moment(data.exp_date).format('DD.MM.YYYY')}</UIText>
+        </View>
       </View>
     </View>
-  </View>
+  </Swipeable>
 }
 
 const styles = StyleSheet.create({
@@ -62,5 +78,24 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     marginTop: 5,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+  },
+  buttonText: {
+    marginTop: 10,
+    color: COLORS.white,
+  },
+  doneContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: COLORS.green600,
+  },
+  skipContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: COLORS.navy800,
   },
 });
