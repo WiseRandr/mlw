@@ -1,25 +1,33 @@
 import moment from "moment";
+import { useCallback } from "react";
 import { When } from "react-if";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Swipeable } from "react-native-gesture-handler";
 import CheckSvg from "../../icon/check-svg";
 import MinusSvg from "../../icon/minus-svg";
 import TaskSvg from "../../icon/task-svg";
+import { usePreDeparture } from "../../store";
 import { PreDepartureType } from "../../types";
 import COLORS from "../../ui/colors";
 import FONTS from "../../ui/fonts";
 import UIText from "../../ui/text/text";
 
 export default function PreDepartureItemCMP({ data }: { data: PreDepartureType }) {
+  const updateStatus = usePreDeparture(state => state.updateStatus);
+
+  const handleUncheck = useCallback(() => { updateStatus(data.id, 'pending'); }, [data, updateStatus]);
+  const handleCompleted = useCallback(() => { updateStatus(data.id, 'completed'); }, [data, updateStatus]);
+  const handleSkipped = useCallback(() => { updateStatus(data.id, 'skipped'); }, [data, updateStatus]);
+  
   return <Swipeable renderRightActions={() => <View style={styles.buttonContainer}>
     <When condition={data.status === 'completed'}>
-      <TouchableOpacity style={styles.doneContainer}><CheckSvg /><UIText style={styles.buttonText}>Uncheck</UIText></TouchableOpacity>
+      <TouchableOpacity style={styles.doneContainer} onPress={handleUncheck}><CheckSvg /><UIText style={styles.buttonText}>Uncheck</UIText></TouchableOpacity>
     </When>
     <When condition={data.status !== 'completed'}>
-      <TouchableOpacity style={styles.doneContainer}><CheckSvg /><UIText style={styles.buttonText}>Done</UIText></TouchableOpacity>
+      <TouchableOpacity style={styles.doneContainer} onPress={handleCompleted}><CheckSvg /><UIText style={styles.buttonText}>Done</UIText></TouchableOpacity>
     </When>
     <When condition={data.optional && data.status !== 'completed'}>
-      <TouchableOpacity style={styles.skipContainer}><MinusSvg /><UIText style={styles.buttonText}>Skip</UIText></TouchableOpacity>
+      <TouchableOpacity style={styles.skipContainer} onPress={handleSkipped}><MinusSvg /><UIText style={styles.buttonText}>Skip</UIText></TouchableOpacity>
     </When>
   </View>}>
     <View style={styles.container}>
