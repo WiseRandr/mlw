@@ -42,8 +42,8 @@ export default function PreDepartureItemCMP({ data }: { data: PreDepartureType }
         </View>
 
         <View style={styles.secondContent}>
-          <UIText style={styles.issueDateText}>Issue date: {moment(data.issue_date).format('DD.MM.YYYY')}</UIText>
-          <UIText style={styles.expDateText}>Exp. date: {moment(data.exp_date).format('DD.MM.YYYY')}</UIText>
+          <UIText style={styles.issueDateText}>Issue date: {data.issue_date ? moment(data.issue_date).format('DD.MM.YYYY') : 'N/A'}</UIText>
+          <UIText style={styles.expDateText}>Exp. date: {data.exp_date ? moment(data.exp_date).format('DD.MM.YYYY') : 'N/A'}</UIText>
         </View>
       </View>
     </View>
