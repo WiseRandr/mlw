@@ -30,6 +30,7 @@ export default function PreDepartureTabCMP() {
         ))}
       </ScrollView>
     </View>
+
     <Switch>
       <Case condition={index === 0}><PreDepartureStcwNationalCMP /></Case>
       <Case condition={index === 1}><PreDepartureFlagStateCMP /></Case>
