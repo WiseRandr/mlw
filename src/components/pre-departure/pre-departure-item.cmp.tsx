@@ -52,7 +52,7 @@ export default function PreDepartureItemCMP({ data }: { data: PreDepartureType }
         </If>
       </View>
     </When>}>
-      <View style={styles.container}>
+      <View style={[styles.container, data.attention_required && data.attention_status === 'pending' && styles.containerPending]}>
         <View style={styles.icon}>
           <Switch>
             <Case condition={data.attention_required && data.attention_status === 'required'}>
@@ -69,8 +69,8 @@ export default function PreDepartureItemCMP({ data }: { data: PreDepartureType }
         <View style={styles.content}>
           <View style={styles.firstContent}>
             <View>
-              <UIText>{data.name}</UIText>
-              <UIText>{data.nationality}</UIText>
+              <UIText style={data.attention_required && data.attention_status === 'pending' && styles.textPending}>{data.name}</UIText>
+              <UIText style={data.attention_required && data.attention_status === 'pending' && styles.textPending}>{data.nationality}</UIText>
             </View>
             <UIText style={styles.typeText}>{data.attention_status === 'optional' && '(Optional)'}</UIText>
           </View>
@@ -95,6 +95,9 @@ const styles = StyleSheet.create({
     paddingVertical: 20,
     borderBottomWidth: 1,
     borderBottomColor: COLORS.grey,
+  },
+  containerPending: {
+    opacity: 0.5,
   },
   icon: {
     marginRight: 17,
@@ -142,5 +145,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 20,
     backgroundColor: COLORS.navy800,
+  },
+  textPending: {
+    color: COLORS.grey,
   }
 });
