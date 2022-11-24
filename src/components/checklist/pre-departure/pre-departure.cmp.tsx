@@ -27,7 +27,7 @@ export default function PreDepartureCMP() {
             <CircularProgress
               radius={25}
               value={percentage}
-              duration={1000}
+              duration={1}
               activeStrokeColor={COLORS.marlowBlue}
               inActiveStrokeColor={COLORS.white}
               activeStrokeWidth={5}
