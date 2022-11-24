@@ -37,7 +37,7 @@ export default function MyChecklistCMP() {
             rightContent={(
               <View style={styles.deleteSwipe}>
                 <TrashSvg />
-                <UIText style={styles.text}>Delete</UIText>
+                <UIText style={styles.swipeText}>DELETE</UIText>
               </View>)
             }
           >
@@ -77,7 +77,9 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 8,
   },
   swipeText: {
-    color: COLORS.white
+    color: COLORS.white,
+    fontSize: FONTS.size.small,
+    marginTop: 10,
   },
   item: {
     justifyContent: 'center',
