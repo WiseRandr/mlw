@@ -14,8 +14,13 @@ export default function MyChecklistCreatePage() {
   const route = useRoute();
   const navigation = useNavigation();
   const pushToChecklist = useMyChecklist(state => state.pushToChecklist);
-  const name = useMemo(() => (route.params as any)?.name || '', [route]);
-  const [tasks, setTasks] = useState<string[]>(['']);
+  const removeFromChecklist = useMyChecklist(state => state.removeFromChecklist);
+
+  const checklistId = useMemo(() => (route.params as any)?.id || uuid.v4() as string, [route]);
+  const myChecklist = useMyChecklist(state => state.myChecklist);
+  const current = useMemo(() => myChecklist.find((c) => c.id === checklistId), [checklistId, myChecklist]);
+  const name = useMemo(() => (current?.name) || (route.params as any)?.name || '', [current, route]);
+  const [tasks, setTasks] = useState<string[]>((current?.items || []).filter((i) => i.status !== 'completed').map(i => i?.name || '').concat(['']));
 
   const handleChange = useCallback((index: number) => (text: string) => {
     const newTasks = [...tasks];
@@ -25,16 +30,21 @@ export default function MyChecklistCreatePage() {
   }, [tasks]);
 
   const onSave = useCallback(() => {
-    const id = uuid.v4() as string;
-    pushToChecklist({ id, name, createdAt: new Date(), items: tasks.filter((t) => t).map((t) => ({
+    if (current) { removeFromChecklist(current); }
+    
+    pushToChecklist({
+      id: checklistId,
+      name,
+      createdAt: new Date(),
+      items: (current?.items || []).filter((i) => i.status === 'completed').concat(tasks.filter((t) => t).map((t) => ({
         id: uuid.v4() as string,
         name: t,
         status: 'to-do'
-      }))
+      })))
     });
 
-    (navigation as any).replace('my-checklist-detail' as never, { id } as never);
-  }, [tasks, name, navigation]);
+    (navigation as any).replace('my-checklist-detail' as never, { id: checklistId } as never);
+  }, [tasks, name, navigation, checklistId, current]);
 
   useEffect(() => {
     navigation.setOptions({

@@ -1,8 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/core";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import { When } from "react-if";
-import { FlatList, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
-import uuid from 'react-native-uuid';
+import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import TaskItemCMP from "../components/task/task-item.cmp";
 import ChevronLeftSvg from "../icon/chevron-left-svg";
 import SwipeModule from "../module/swipe/swipe.module";
@@ -20,12 +19,7 @@ export default function MyChecklistDetailPage() {
 
   // Store
   const myChecklists = useMyChecklist(state => state.myChecklist);
-  const pushTask = useMyChecklist(state => state.pushTask);
   const updateTask = useMyChecklist(state => state.updateTask);
-
-  // States
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [newTaskInput, setNewTaskInput] = useState<string>('');
 
   // Memos
   const id = useMemo(() => (route.params as any)?.id || '', [route]);
@@ -36,63 +30,36 @@ export default function MyChecklistDetailPage() {
     return a;
   }, { todos: [] as TaskType[], completed: [] as TaskType[] }), [current]);
 
-  const clearEditing = useCallback(() => {
-    setIsEditing(false);
-    setNewTaskInput('');
-  }, []);
-  
-  const leftOnPress = useCallback(() => {
-    if (!isEditing) navigation.goBack();
-    else clearEditing();
-  }, [isEditing, clearEditing]);
-
-  const rightOnPress = useCallback(() => {
-    if (!isEditing) setIsEditing(true);
-    else {
-      if (newTaskInput && current) {
-        pushTask(current.id, { id: uuid.v4() as string, name: newTaskInput, status: 'to-do' });
-        clearEditing();
-      }
-    }
-  }, [newTaskInput, isEditing, current, pushTask, clearEditing]);
-
-  const handleChange = useCallback((text: string) => { setNewTaskInput(text); }, []);
-
   const handlePushTodo = useCallback((task: TaskType) => () => { if (current) updateTask(current.id, task.id, { status: 'to-do' }) }, [current, updateTask]);
 
   useEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (<TouchableOpacity onPress={leftOnPress} style={styles.headerLeft}><ChevronLeftSvg /><UIText>{isEditing ? 'Cancel' : 'Lists'}</UIText></TouchableOpacity>),
-      headerRight: () => (<UIButton title={isEditing ? 'Save' : 'Edit List'} onPress={rightOnPress} />)
+      headerLeft: () => (<TouchableOpacity onPress={() => { navigation.goBack(); }} style={styles.headerLeft}><ChevronLeftSvg /><UIText>Lists</UIText></TouchableOpacity>),
+      headerRight: () => (<UIButton title={'Edit List'} onPress={() => { if (current) if (current) navigation.navigate('my-checklist-create' as never, { id: current.id } as never) }} />)
     });
-  }, [isEditing, rightOnPress, leftOnPress]);
+  }, [current, navigation]);
 
   return <View>
     <When condition={Boolean(current)}>
       <UIText style={styles.title}>{current?.name}</UIText>
 
       <View>
-        <When condition={todos.length > 0 && completed.length > 0 && !isEditing}>
+        <When condition={todos.length > 0 && completed.length > 0}>
           <UIText style={styles.menu}>To-dos</UIText>
         </When>
         <FlatList renderItem={({ item }) => <TaskItemCMP task={item} checklistId={current?.id} />} data={todos} keyExtractor={(item) => item.id} ItemSeparatorComponent={() => <View style={styles.seperator} />} />
         
-        <When condition={isEditing}>
-          <TextInput style={styles.input} placeholder="Task" value={newTaskInput} onChangeText={handleChange} />
-        </When>
-
-        <When condition={todos.length > 0 && completed.length > 0 && !isEditing}>
+        <When condition={todos.length > 0 && completed.length > 0}>
           <UIText style={styles.menu}>Completed</UIText>
         </When>
-        <When condition={!isEditing}>
-          {completed.map((comp) => (
-            <View key={comp.id} style={styles.item}>
-              <SwipeModule rightContent={<View><UIText>Uncheck</UIText></View>} onPress={handlePushTodo(comp)}>
-                <UIText style={[styles.itemText, styles.itemTextCompleted]}>{comp.name}</UIText>
-              </SwipeModule>
-            </View>
-          ))}
-        </When>
+
+        {completed.map((comp) => (
+          <View key={comp.id} style={styles.item}>
+            <SwipeModule rightContent={<View><UIText>Uncheck</UIText></View>} onPress={handlePushTodo(comp)}>
+              <UIText style={[styles.itemText, styles.itemTextCompleted]}>{comp.name}</UIText>
+            </SwipeModule>
+          </View>
+        ))}
       </View>
     </When>
   </View>
