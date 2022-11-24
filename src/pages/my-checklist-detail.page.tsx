@@ -4,7 +4,6 @@ import { When } from "react-if";
 import { FlatList, StyleSheet, TouchableOpacity, View } from "react-native";
 import TaskItemCMP from "../components/task/task-item.cmp";
 import ChevronLeftSvg from "../icon/chevron-left-svg";
-import SwipeModule from "../module/swipe/swipe.module";
 import { useMyChecklist } from "../store";
 import { TaskType } from "../types/task.type";
 import UIButton from "../ui/button/button";
@@ -19,7 +18,6 @@ export default function MyChecklistDetailPage() {
 
   // Store
   const myChecklists = useMyChecklist(state => state.myChecklist);
-  const updateTask = useMyChecklist(state => state.updateTask);
 
   // Memos
   const id = useMemo(() => (route.params as any)?.id || '', [route]);
@@ -29,8 +27,6 @@ export default function MyChecklistDetailPage() {
     if (c.status === 'completed') a.completed.push(c);
     return a;
   }, { todos: [] as TaskType[], completed: [] as TaskType[] }), [current]);
-
-  const handlePushTodo = useCallback((task: TaskType) => () => { if (current) updateTask(current.id, task.id, { status: 'to-do' }) }, [current, updateTask]);
 
   useEffect(() => {
     navigation.setOptions({
@@ -49,17 +45,11 @@ export default function MyChecklistDetailPage() {
         </When>
         <FlatList renderItem={({ item }) => <TaskItemCMP task={item} checklistId={current?.id} />} data={todos} keyExtractor={(item) => item.id} ItemSeparatorComponent={() => <View style={styles.seperator} />} />
         
-        <When condition={todos.length > 0 && completed.length > 0}>
+        <When condition={completed.length > 0}>
           <UIText style={styles.menu}>Completed</UIText>
         </When>
 
-        {completed.map((comp) => (
-          <View key={comp.id} style={styles.item}>
-            <SwipeModule rightContent={<View><UIText>Uncheck</UIText></View>} onPress={handlePushTodo(comp)}>
-              <UIText style={[styles.itemText, styles.itemTextCompleted]}>{comp.name}</UIText>
-            </SwipeModule>
-          </View>
-        ))}
+        <FlatList renderItem={({ item }) => <TaskItemCMP task={item} checklistId={current?.id} isCompelted />} data={completed} keyExtractor={(item) => item.id} ItemSeparatorComponent={() => <View style={styles.seperator} />} />
       </View>
     </When>
   </View>
@@ -78,12 +68,12 @@ const styles = StyleSheet.create({
   },
   menu: {
     fontWeight: '600',
-    paddingVertical: 10,
+    paddingTop: 25,
+    paddingBottom: 15,
     paddingHorizontal: 25,
     fontSize: FONTS.size.small,
   },
   item: {
-    borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: COLORS.grey,
     paddingVertical: 20,
@@ -103,5 +93,8 @@ const styles = StyleSheet.create({
   seperator: {
     flex: 1,
     height: 1,
+  },
+  unCheck: {
+
   }
 });
