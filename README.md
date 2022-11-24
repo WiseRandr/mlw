@@ -1,13 +1,13 @@
-React Native Task Managment (ios only)
+# React Native Task Managment (ios only)
 
-Prerequisite:
+## **Prerequisite:**
 - Xcode
 - Cocoapod
 - Node.js (lastest version)
 - Simulator from Xcode
 - Yarn
 
-**Steps to start project:**
+## **Steps to start project:**
 
 Let's install all dependencies first. From the terminal run these commands one after the other
 1. `yarn install`
