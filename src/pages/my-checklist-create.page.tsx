@@ -57,12 +57,12 @@ export default function MyChecklistCreatePage() {
     <UIText style={styles.headerTitle}>{name}</UIText>
 
     <View>
-        {
-          tasks.map((t, i) => <View key={i} style={styles.inputContainer}>
-            <TaskSvg />
-            <TextInput placeholder="bla" style={styles.input} value={tasks[i]} onChangeText={handleChange(i)} />
-          </View>)
-        }
+      {
+        tasks.map((t, i) => <View key={i} style={styles.inputContainer}>
+          <TaskSvg />
+          <TextInput placeholder="Add new task" style={styles.input} value={tasks[i]} onChangeText={handleChange(i)} />
+        </View>)
+      }
     </View>
   </View>;
 }
