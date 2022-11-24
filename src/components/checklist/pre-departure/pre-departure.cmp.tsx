@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/core";
 import { useCallback, useMemo } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
+import ChevronRightSvg from "../../../icon/chevron-right-svg";
 import { usePreDeparture } from "../../../store";
 import UIText from "../../../ui/text/text";
 import ChecklistCardCMP from "../card.cmp";
@@ -20,7 +21,11 @@ export default function PreDepartureCMP() {
     <View>
       <ChecklistCardCMP>
         <TouchableOpacity onPress={handlePress} style={styles.list}>
-          <UIText>Review list</UIText>
+          <View><UIText>{percentage}%</UIText></View>
+          <UIText style={styles.text}>Review list</UIText>
+          <View>
+            <ChevronRightSvg />
+          </View>
         </TouchableOpacity>
       </ChecklistCardCMP>
     </View>
@@ -30,7 +35,13 @@ export default function PreDepartureCMP() {
 const styles = StyleSheet.create({
   list: {
     flex: 1,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+    paddingHorizontal: 20,
+  },
+  text: {
+    flex: 1,
+    marginLeft: 10,
   }
 });
