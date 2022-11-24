@@ -1,13 +1,14 @@
-import { useNavigation } from "@react-navigation/core";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 import { SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import CreateMyChecklistCMP from "../components/checklist/my-checklist/create-my-checklist.cmp";
 import MyChecklistCMP from "../components/checklist/my-checklist/my-checklist.cmp";
 import PreDepartureCMP from "../components/checklist/pre-departure/pre-departure.cmp";
 import AddSvg from "../icon/add-svg";
 
 export default function ChecklistPage() {
-  const navigation = useNavigation();
-  const openModal = useCallback(() => { navigation.navigate('create-my-checklist-modal' as never) }, [navigation]);
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  const toggleModal = useCallback(() => { setShowModal(!showModal) }, [showModal]);
 
   return <SafeAreaView style={styles.container}>
     <View style={styles.content}>
@@ -17,10 +18,11 @@ export default function ChecklistPage() {
       <MyChecklistCMP />
     </View>
     <View style={styles.addIcon}>
-      <TouchableOpacity onPress={openModal}>
+      <TouchableOpacity onPress={toggleModal}>
         <AddSvg />
       </TouchableOpacity>
     </View>
+    <CreateMyChecklistCMP visible={showModal} close={toggleModal} />
   </SafeAreaView>
 }
 
