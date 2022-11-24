@@ -36,7 +36,7 @@ export default function PreDepartureItemCMP({ data }: { data: PreDepartureType }
       <View style={styles.buttonContainer}>
         <If condition={data.attention_required && data.attention_status === 'required'}>
           <Then>
-            <TouchableOpacity style={styles.doneContainer} onPress={handleSubmit}><CheckSvg /><UIText style={styles.buttonText}>Submit</UIText></TouchableOpacity>
+            <TouchableOpacity style={styles.submitContainer} onPress={handleSubmit}><CheckSvg /><UIText style={styles.buttonText}>Submitted</UIText></TouchableOpacity>
           </Then>
           <Else>
             <When condition={data.status === 'completed'}>
@@ -141,6 +141,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.green600,
   },
   skipContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+    backgroundColor: COLORS.navy800,
+  },
+  submitContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 20,
