@@ -2,6 +2,7 @@ import { useCallback } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import CheckSvg from "../../icon/check-svg";
+import TaskSvg from "../../icon/task-svg";
 import TrashSvg from "../../icon/trash-svg";
 import { useMyChecklist } from "../../store";
 import { TaskType } from "../../types/task.type";
@@ -30,6 +31,7 @@ export default function TaskItemCMP({ checklistId, task }: { checklistId?: strin
   
   return <Swipeable renderRightActions={rightContent}>
       <View style={styles.container}>
+        <View style={styles.icon}><TaskSvg /></View>
         <UIText>{task.name}</UIText>
       </View>
     </Swipeable>
@@ -37,16 +39,15 @@ export default function TaskItemCMP({ checklistId, task }: { checklistId?: strin
 
 const styles = StyleSheet.create({
   container: {
-    borderTopWidth: 1,
     borderBottomWidth: 1,
     paddingVertical: 20,
     paddingHorizontal: 25,
     borderColor: COLORS.grey,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   buttonContainer: {
     flexDirection: 'row',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
     backgroundColor: 'red'
   },
   button: {
@@ -64,5 +65,8 @@ const styles = StyleSheet.create({
   },
   buttonDone: {
     backgroundColor: COLORS.green600
+  },
+  icon: {
+    marginRight: 20,
   }
 });
