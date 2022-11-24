@@ -1,5 +1,6 @@
 import { useMemo } from "react";
 import { StyleSheet, View } from "react-native";
+import LinearGradient from 'react-native-linear-gradient';
 import { usePreDeparture } from "../../store";
 import COLORS from "../../ui/colors";
 import UIText from "../../ui/text/text";
@@ -11,7 +12,9 @@ export default function PreDepartureStatCMP() {
   return <View style={styles.container}>
     <View style={styles.statTextContainer}><UIText style={styles.statText}>{percentage}% completed</UIText></View>
     <View style={styles.statContainer}>
-      <View style={[styles.stat, styles.statFull, { width: `${percentage}%` }]} />
+      <View style={[{ width: `${percentage}%`}]}>
+        <LinearGradient style={{ borderTopLeftRadius: 100, borderBottomLeftRadius: 100, height: 10  }} colors={[COLORS.marlowBlue, COLORS.marlowBlueLight, COLORS.green500]} angle={50} useAngle />
+      </View>
       <View style={[styles.stat, styles.statEmpty, { width: `${100 - percentage}%` }]} />
     </View>
   </View>
