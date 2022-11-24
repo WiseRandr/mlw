@@ -6,7 +6,6 @@ import { Else, If, Then } from 'react-if';
 import LoginPage from './auth/login.page';
 import COLORS from '../ui/colors';
 import PreDeparturePage from './pre-departure.page';
-import CreateChecklistModalPage from './create-checklist.modal.page';
 import PreCreateChecklistPage from './pre-create-checklist.page';
 import MyChecklistDetailPage from './my-checklist-detail.page';
 import MyChecklistCreatePage from './my-checklist-create.page';
@@ -25,10 +24,6 @@ export default function Routes() {
           <Stack.Screen name="pre-create-checklist" component={PreCreateChecklistPage} options={{ headerTitle: '', headerShadowVisible: false }} />
           <Stack.Screen name="my-checklist-detail" component={MyChecklistDetailPage} options={{ headerTitle: '', headerShadowVisible: false, headerStyle: { backgroundColor: COLORS.navy300 } }} />
           <Stack.Screen name="my-checklist-create" component={MyChecklistCreatePage} options={{ headerTitle: '', headerShadowVisible: false, headerStyle: { backgroundColor: COLORS.navy300 } }} />
-
-          <Stack.Group screenOptions={{ presentation: 'modal', header: () => <></> }}>
-            <Stack.Screen name="create-my-checklist-modal" component={CreateChecklistModalPage} />
-          </Stack.Group>
         </Stack.Navigator>
       </Then>
 

@@ -5,7 +5,6 @@ import { StyleSheet, View, TextInput, TouchableOpacity } from "react-native";
 import ChevronLeftSvg from "../icon/chevron-left-svg";
 import TaskSvg from "../icon/task-svg";
 import { useMyChecklist } from "../store";
-import { TaskType } from "../types";
 import UIButton from "../ui/button/button";
 import COLORS from "../ui/colors";
 import FONTS from "../ui/fonts";
@@ -39,7 +38,7 @@ export default function MyChecklistCreatePage() {
 
   useEffect(() => {
     navigation.setOptions({
-      headerLeft: () => (<TouchableOpacity onPress={() => { navigation.goBack() }}><ChevronLeftSvg /><UIText>Cancel</UIText></TouchableOpacity>),
+      headerLeft: () => (<TouchableOpacity onPress={() => { navigation.goBack() }} style={styles.headerLeft}><ChevronLeftSvg /><UIText>Cancel</UIText></TouchableOpacity>),
       headerRight: () => (<UIButton title={'Save'} onPress={onSave} full />)
     });
   }, [onSave]);
@@ -64,6 +63,11 @@ const styles = StyleSheet.create({
     fontSize: FONTS.size.large,
     paddingHorizontal: 25,
     paddingVertical: 20,
+  },
+  headerLeft: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputContainer: {
     paddingHorizontal: 25,
