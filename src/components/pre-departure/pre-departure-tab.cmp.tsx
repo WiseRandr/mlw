@@ -12,11 +12,11 @@ export default function PreDepartureTabCMP() {
   const [index, setIndex] = useState<number>(0);
   const data = usePreDeparture(state => state.data);
   const menus = useMemo(() => [
-    { index: 0, name: 'STCW National' },
-    { index: 1, name: 'Flag State' },
-    { index: 2, name: 'GDPR Documents' },
-    { index: 3, name: 'Training' },
-    { index: 4, name: 'Technical' },
+    { index: 0, name: 'STCW National', key: 'stcw-national' },
+    { index: 1, name: 'Flag State', key: 'flag-state' },
+    { index: 2, name: 'GDPR Documents', key: 'gdpr-documents' },
+    { index: 3, name: 'Training', key: 'training' },
+    { index: 4, name: 'Technical', key: 'technical' },
   ], []);
 
   const handleSwitch = useCallback((newIndex: number) => () => { setIndex(newIndex) }, []);
@@ -27,7 +27,7 @@ export default function PreDepartureTabCMP() {
         {menus.map((menu) => (
           <View key={menu.index} style={styles.menu}>
             <TouchableOpacity style={[styles.menuInner, index === menu.index && styles.menuSelected]} onPress={handleSwitch(menu.index)}>
-              <When condition={menu.index === 0 && data.filter((d) => d.attention_status === 'required').length > 0}><View style={styles.menuIcon}><AttentionSvg /></View></When>
+              <When condition={data.filter((d) => d.category === menu.key && d.attention_status === 'required').length > 0}><View style={styles.menuIcon}><AttentionSvg /></View></When>
               <UIText style={[styles.menuText, index === menu.index && styles.menuTextSelected]}>{menu.name}</UIText>
             </TouchableOpacity>
           </View>
