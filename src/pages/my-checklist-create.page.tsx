@@ -33,7 +33,7 @@ export default function MyChecklistCreatePage() {
       }))
     });
 
-    navigation.navigate('my-checklist-detail' as never, { id } as never);
+    (navigation as any).replace('my-checklist-detail' as never, { id } as never);
   }, [tasks, name, navigation]);
 
   useEffect(() => {
