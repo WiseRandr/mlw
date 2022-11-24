@@ -1,18 +1,39 @@
+import { useCallback, useEffect, useState } from "react";
+import { Then, If, Else } from "react-if";
 import { Dimensions, Modal, StyleSheet, TouchableOpacity, View } from "react-native";
+import DoneSvg from "../../icon/done-svg";
 import COLORS from "../../ui/colors";
 import UIText from "../../ui/text/text";
 
 export default function AlertModule({ visible, text, onClose, onDone }: { visible: boolean, text: string, onClose: () => void, onDone: () => void }) {
+  const [done, setDone] = useState<boolean>(false);
+  const handleDone = useCallback(() => {
+    setDone(true);
+    const tm = setTimeout(() => {
+      onDone();
+      clearTimeout(tm);
+    }, 1000);
+  }, [onDone]);
+
+  useEffect(() => { setDone(false) }, [visible]);
+  
   return <Modal visible={visible} transparent>
     <View style={styles.content}>
       <View style={styles.background} />
-      <View style={styles.container}>
-        <UIText style={styles.text}>{text}</UIText>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={[styles.buttonSelf, styles.buttonLeft]} onPress={onClose}><UIText style={styles.buttonText}>No</UIText></TouchableOpacity>
-          <TouchableOpacity style={[styles.buttonSelf, styles.buttonRight]}  onPress={onDone}><UIText style={[styles.buttonText, styles.buttonRightText]}>Yes</UIText></TouchableOpacity>
-        </View>
-      </View>
+      <If condition={done}>
+        <Then>
+          <DoneSvg />
+        </Then>
+        <Else>
+          <View style={styles.container}>
+            <UIText style={styles.text}>{text}</UIText>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity style={[styles.buttonSelf, styles.buttonLeft]} onPress={onClose}><UIText style={styles.buttonText}>No</UIText></TouchableOpacity>
+              <TouchableOpacity style={[styles.buttonSelf, styles.buttonRight]}  onPress={handleDone}><UIText style={[styles.buttonText, styles.buttonRightText]}>Yes</UIText></TouchableOpacity>
+            </View>
+          </View>
+        </Else>
+      </If>
     </View>
   </Modal>;
 }
