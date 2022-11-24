@@ -21,7 +21,7 @@ export default function PreDepartureCMP() {
     <View>
       <ChecklistCardCMP>
         <TouchableOpacity onPress={handlePress} style={styles.list}>
-          <View><UIText>{percentage}%</UIText></View>
+          <View><UIText style={styles.statText}>{percentage}%</UIText></View>
           <UIText style={styles.text}>Review list</UIText>
           <View>
             <ChevronRightSvg />
@@ -43,5 +43,8 @@ const styles = StyleSheet.create({
   text: {
     flex: 1,
     marginLeft: 10,
+  },
+  statText: {
+    fontWeight: '700',
   }
 });
