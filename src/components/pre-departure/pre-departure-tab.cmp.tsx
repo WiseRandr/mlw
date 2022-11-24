@@ -4,10 +4,13 @@ import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 import UIText from '../../ui/text/text';
 import { useCallback, useMemo, useState } from 'react';
 import COLORS from '../../ui/colors';
-import { Case, Switch } from 'react-if';
+import { Case, Switch, When } from 'react-if';
+import { usePreDeparture } from '../../store';
+import AttentionSvg from '../../icon/attention-svg';
 
 export default function PreDepartureTabCMP() {
   const [index, setIndex] = useState<number>(0);
+  const data = usePreDeparture(state => state.data);
   const menus = useMemo(() => [
     { index: 0, name: 'STCW National' },
     { index: 1, name: 'Flag State' },
@@ -24,6 +27,7 @@ export default function PreDepartureTabCMP() {
         {menus.map((menu) => (
           <View key={menu.index} style={styles.menu}>
             <TouchableOpacity style={[styles.menuInner, index === menu.index && styles.menuSelected]} onPress={handleSwitch(menu.index)}>
+              <When condition={menu.index === 0 && data.filter((d) => d.attention_status === 'required').length > 0}><View style={styles.menuIcon}><AttentionSvg /></View></When>
               <UIText style={[styles.menuText, index === menu.index && styles.menuTextSelected]}>{menu.name}</UIText>
             </TouchableOpacity>
           </View>
@@ -47,8 +51,13 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 25,
   },
+  menuIcon: {
+    marginRight: 5,
+  },
   menuInner: {
     paddingVertical: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   menuSelected: {
     borderBottomWidth: 2,
