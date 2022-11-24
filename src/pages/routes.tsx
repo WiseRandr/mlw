@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 
 export default function Routes() {
   const { isConnected } = useAuth();
-  
+
   return <NavigationContainer>
     <If condition={isConnected}>
       <Then>
