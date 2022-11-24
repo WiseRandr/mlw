@@ -1,8 +1,10 @@
 import { useNavigation } from "@react-navigation/core";
 import { useCallback, useMemo } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
+import CircularProgress from 'react-native-circular-progress-indicator';
 import ChevronRightSvg from "../../../icon/chevron-right-svg";
 import { usePreDeparture } from "../../../store";
+import COLORS from "../../../ui/colors";
 import UIText from "../../../ui/text/text";
 import ChecklistCardCMP from "../card.cmp";
 import ChecklistTitleCMP from "../title.cmp";
@@ -21,7 +23,20 @@ export default function PreDepartureCMP() {
     <View>
       <ChecklistCardCMP>
         <TouchableOpacity onPress={handlePress} style={styles.list}>
-          <View><UIText style={styles.statText}>{percentage}%</UIText></View>
+          <View>
+            <CircularProgress
+              radius={25}
+              value={percentage}
+              duration={1000}
+              activeStrokeColor={COLORS.marlowBlue}
+              inActiveStrokeColor={COLORS.white}
+              activeStrokeWidth={5}
+              progressFormatter={(value: number) => {
+                'worklet';
+                return `${value}%`
+              }}
+            />
+          </View>
           <UIText style={styles.text}>Review list</UIText>
           <View>
             <ChevronRightSvg />
