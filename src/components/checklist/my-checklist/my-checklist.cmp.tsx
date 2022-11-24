@@ -42,7 +42,7 @@ export default function MyChecklistCMP() {
             }
           >
             <View style={styles.content}>
-              <TouchableOpacity style={styles.item}>
+              <TouchableOpacity style={styles.item} onPress={goToPreCreate(item.id)}>
                 <UIText style={styles.name}>{item.name}</UIText>
                 <UIText style={styles.text}>Date created: {moment(item.createdAt).format('DD.MM.YY')}</UIText>
                 <UIText style={styles.text}>Last item added: {item.items[item.items.length - 1]?.name}</UIText>
